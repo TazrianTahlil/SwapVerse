@@ -29,11 +29,31 @@ const productSchema = new mongoose.Schema(
     price: {
       type: Number,
       min: 0,
+      validate: {
+        validator: function(value) {
+          // Price is required only if listingType is "sell"
+          if (this.listingType === "sell") {
+            return value !== undefined && value !== null && value >= 0;
+          }
+          return true; // For non-sell listings, price is optional
+        },
+        message: "Price is required and must be 0 or greater for sell listings"
+      }
     },
 
     // Only for trade
     tradeDescription: {
       type: String,
+      validate: {
+        validator: function(value) {
+          // tradeDescription is required only if listingType is "trade"
+          if (this.listingType === "trade") {
+            return value && value.trim().length > 0;
+          }
+          return true; // For non-trade listings, tradeDescription is optional
+        },
+        message: "Trade description is required for trade listings"
+      }
     },
 
     // (optional) link product to user
@@ -44,24 +64,6 @@ const productSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
-// Conditional validation
-productSchema.pre("save", function (next) {
-  if (this.listingType === "sell" && this.price == null) {
-    return next(new Error("Sell product must have a price"));
-  }
-
-  if (this.listingType === "trade" && !this.tradeDescription) {
-    return next(new Error("Trade product must have a trade description"));
-  }
-
-  if (this.listingType === "donate") {
-    this.price = undefined;
-    this.tradeDescription = undefined;
-  }
-
-  next();
-});
 
 const Product = mongoose.model("Product", productSchema);
 
