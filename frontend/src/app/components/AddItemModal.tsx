@@ -53,7 +53,7 @@ export const AddItemModal = ({ actionType, onClose }: AddItemModalProps) => {
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        {/* Header */}
+        
         <div className="sticky top-0 bg-white border-b border-purple-100 p-6 flex items-center justify-between rounded-t-3xl">
           <h2 className="text-purple-900 capitalize">{actionType} Item</h2>
           <button

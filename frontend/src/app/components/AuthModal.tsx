@@ -63,7 +63,7 @@ export const AuthModal = ({ onClose }: AuthModalProps) => {
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md relative animate-in fade-in zoom-in duration-200">
-        {/* Close Button */}
+        
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 rounded-xl hover:bg-purple-50 transition-colors"
@@ -72,7 +72,7 @@ export const AuthModal = ({ onClose }: AuthModalProps) => {
         </button>
 
         <div className="p-8">
-          {/* Logo and Branding */}
+          
           <div className="text-center mb-6">
             <div className="flex justify-center items-center gap-3 mb-3">
               <div className="bg-purple-100 p-2 rounded-xl">
@@ -86,7 +86,7 @@ export const AuthModal = ({ onClose }: AuthModalProps) => {
             <p className="text-purple-600">Join our community marketplace</p>
           </div>
 
-          {/* Tabs for switching between Login and Signup */}
+          
           <div className="flex gap-2 mb-6">
             <button
               type="button"
@@ -112,9 +112,9 @@ export const AuthModal = ({ onClose }: AuthModalProps) => {
             </button>
           </div>
 
-          {/* Form */}
+          
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Full Name Input (only visible on Sign Up) */}
+            
             {!isLogin && (
               <div>
                 <label htmlFor="name" className="block text-purple-900 mb-2">
@@ -132,7 +132,7 @@ export const AuthModal = ({ onClose }: AuthModalProps) => {
               </div>
             )}
 
-            {/* Email Input */}
+            
             <div>
               <label htmlFor="email" className="block text-purple-900 mb-2">
                 Email
@@ -148,7 +148,7 @@ export const AuthModal = ({ onClose }: AuthModalProps) => {
               />
             </div>
 
-            {/* Password Input */}
+            
             <div>
               <label htmlFor="password" className="block text-purple-900 mb-2">
                 Password
@@ -164,7 +164,7 @@ export const AuthModal = ({ onClose }: AuthModalProps) => {
               />
             </div>
 
-            {/* Submit Button */}
+            
             <button
               type="submit"
               className="w-full bg-purple-600 text-white py-3 rounded-2xl hover:bg-purple-700 transition-colors mt-6"
@@ -173,7 +173,7 @@ export const AuthModal = ({ onClose }: AuthModalProps) => {
             </button>
           </form>
 
-          {/* Switch Between Login/Sign Up */}
+          
           <p className="text-center text-purple-400 mt-4">
             {isLogin ? "Don't have an account? " : 'Already have an account? '}
             <button
@@ -185,7 +185,7 @@ export const AuthModal = ({ onClose }: AuthModalProps) => {
             </button>
           </p>
 
-          {/* Demo Note */}
+          
           <div className="mt-4 text-center bg-purple-50 rounded-2xl p-3">
             <p className="text-purple-700 text-sm">
               Demo: Use your email and password to {isLogin ? 'login' : 'sign up'}

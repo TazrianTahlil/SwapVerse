@@ -62,7 +62,7 @@ export const MarketplacePage = () => {
   return (
     <div className="w-full bg-[#F5F3F0]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Hero Section */}
+       
         <div className="bg-white rounded-3xl p-8 mb-8 shadow-lg">
           <div className="text-center max-w-3xl mx-auto">
             <h1 className="text-purple-900 mb-4">Browse Marketplace</h1>
@@ -71,7 +71,7 @@ export const MarketplacePage = () => {
               trade for something new, or find great deals.
             </p>
 
-            {/* Category Buttons */}
+           
             <div className="flex gap-4 justify-center mb-6 flex-wrap">
               <button
                 onClick={() =>
@@ -101,7 +101,7 @@ export const MarketplacePage = () => {
               </button>
             </div>
 
-            {/* Action Buttons */}
+           
             <div className="flex flex-wrap gap-4 justify-center">
               <button
                 onClick={() => handleAddItem('donate')}
@@ -131,9 +131,9 @@ export const MarketplacePage = () => {
           </div>
         </div>
 
-        {/* Search and Filters */}
+       
         <div className="bg-white rounded-3xl p-6 mb-8 shadow-lg">
-          {/* Search Bar */}
+          
           <div className="mb-6">
             <div className="relative">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-400" />
@@ -147,9 +147,9 @@ export const MarketplacePage = () => {
             </div>
           </div>
 
-          {/* Filter Buttons */}
+         
           <div className="space-y-4">
-            {/* Action Type Filter */}
+           
             <div>
               <h4 className="text-purple-900 mb-2">Type</h4>
               <div className="flex flex-wrap gap-2">
@@ -169,7 +169,7 @@ export const MarketplacePage = () => {
               </div>
             </div>
 
-            {/* Book Genre Filter */}
+           
             {(selectedCategory === 'All' || selectedCategory === 'Books') && (
               <div>
                 <h4 className="text-purple-900 mb-2">Book Genre</h4>
@@ -203,7 +203,7 @@ export const MarketplacePage = () => {
               </div>
             )}
 
-            {/* Device Type Filter */}
+           
             {(selectedCategory === 'All' || selectedCategory === 'Electronics') && (
               <div>
                 <h4 className="text-purple-900 mb-2">Device Type</h4>
@@ -237,7 +237,7 @@ export const MarketplacePage = () => {
           </div>
         </div>
 
-        {/* Items Grid */}
+        
         <div>
           <h3 className="text-purple-900 mb-4">
             {filteredItems.length} {filteredItems.length === 1 ? 'Item' : 'Items'} Available
@@ -256,7 +256,7 @@ export const MarketplacePage = () => {
         </div>
       </div>
 
-      {/* Modals */}
+      
       {selectedItem && (
         <ItemDetailModal
           item={selectedItem}
@@ -286,3 +286,4 @@ export const MarketplacePage = () => {
     </div>
   );
 };
+

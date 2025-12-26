@@ -62,7 +62,7 @@ export const ItemDetailModal = ({ item, onClose, onOpenChat }: ItemDetailModalPr
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
-        {/* Header */}
+        
         <div className="sticky top-0 bg-white border-b border-purple-100 p-6 flex items-center justify-between rounded-t-3xl">
           <h2 className="text-purple-900">Item Details</h2>
           <button
@@ -74,7 +74,7 @@ export const ItemDetailModal = ({ item, onClose, onOpenChat }: ItemDetailModalPr
         </div>
 
         <div className="p-6">
-          {/* Image */}
+          
           <div className="relative aspect-video rounded-2xl overflow-hidden bg-purple-50 mb-6">
             <ImageWithFallback
               src={item.image}
@@ -87,7 +87,7 @@ export const ItemDetailModal = ({ item, onClose, onOpenChat }: ItemDetailModalPr
             </div>
           </div>
 
-          {/* Item Info */}
+          
           <div className="space-y-4 mb-6">
             <div>
               <h1 className="text-purple-900 mb-2">{item.name}</h1>
@@ -148,7 +148,7 @@ export const ItemDetailModal = ({ item, onClose, onOpenChat }: ItemDetailModalPr
             </div>
           </div>
 
-          {/* Owner Actions */}
+          
           {isOwner && (
             <div className="space-y-4 mb-6">
               <div className="bg-purple-50 p-4 rounded-2xl">
@@ -197,7 +197,7 @@ export const ItemDetailModal = ({ item, onClose, onOpenChat }: ItemDetailModalPr
             </div>
           )}
 
-          {/* Non-Owner Actions */}
+         
           {!isOwner && (
             <div className="space-y-4">
               {!showRequestForm && !hasRequested && item.status === 'Available' && (
