@@ -81,13 +81,13 @@ export const Footer = () => {
               </li>
               <li className="flex items-start gap-2">
                 <Phone className="w-4 h-4 text-purple-600 mt-0.5 flex-shrink-0" />
-                <span className="text-gray-600">+1 (555) 123-4567</span>
+                <span className="text-gray-600">+8801xxxxxxxxx</span>
               </li>
               <li className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-purple-600 mt-0.5 flex-shrink-0" />
                 <span className="text-gray-600">
-                  123 Campus Drive<br />
-                  University City, ST 12345
+                   ECE Campus<br />
+                  BUET
                 </span>
               </li>
             </ul>
