@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useApp } from '../context/AppContext';
 import { X, BookOpen, Laptop } from 'lucide-react';
 
 type AuthModalProps = {
@@ -7,23 +6,57 @@ type AuthModalProps = {
 };
 
 export const AuthModal = ({ onClose }: AuthModalProps) => {
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(true); // State for toggling between login/signup
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  const { login, signup } = useApp();
-
+  
+  // Function to handle form submission (either login or signup)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     try {
-      if (isLogin) {
-        await login(email, password);
+      // Set the API URL based on whether the user is logging in or signing up
+      const url = isLogin
+        ? 'http://localhost:5000/api/auth/login' // Login endpoint
+        : 'http://localhost:5000/api/auth/signup'; // Signup endpoint
+
+      // Prepare the body data
+      const body = {
+        email,
+        password,
+        fullName: isLogin ? undefined : name, // Only include name when signing up
+      };
+
+      // Send the request to the backend API
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // On success, store the JWT and user data in localStorage
+        localStorage.setItem('jwt', data.token);
+        localStorage.setItem('user', JSON.stringify({
+          _id: data._id,
+          fullName: data.fullName,
+          email: data.email,
+        }));
+
+        window.location.reload();
+        onClose();
       } else {
-        await signup(email, password, name);
+        // Handle errors and display them in the console
+        alert(`Error: ${data.error || 'Unknown error'}`);
+        console.error('Authentication error:', data.error || 'Unknown error');
       }
-      onClose();
     } catch (error) {
-      console.error('Authentication error:', error);
+      console.error('Error during authentication:', error);
     }
   };
 
@@ -53,7 +86,7 @@ export const AuthModal = ({ onClose }: AuthModalProps) => {
             <p className="text-purple-600">Join our community marketplace</p>
           </div>
 
-          {/* Tabs */}
+          {/* Tabs for switching between Login and Signup */}
           <div className="flex gap-2 mb-6">
             <button
               type="button"
@@ -81,6 +114,7 @@ export const AuthModal = ({ onClose }: AuthModalProps) => {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Full Name Input (only visible on Sign Up) */}
             {!isLogin && (
               <div>
                 <label htmlFor="name" className="block text-purple-900 mb-2">
@@ -93,11 +127,12 @@ export const AuthModal = ({ onClose }: AuthModalProps) => {
                   onChange={(e) => setName(e.target.value)}
                   className="w-full px-4 py-3 rounded-2xl bg-purple-50 border-2 border-transparent focus:border-purple-400 focus:outline-none transition-colors"
                   placeholder="Enter your name"
-                  required={!isLogin}
+                  required={!isLogin} // Required for sign up only
                 />
               </div>
             )}
 
+            {/* Email Input */}
             <div>
               <label htmlFor="email" className="block text-purple-900 mb-2">
                 Email
@@ -113,6 +148,7 @@ export const AuthModal = ({ onClose }: AuthModalProps) => {
               />
             </div>
 
+            {/* Password Input */}
             <div>
               <label htmlFor="password" className="block text-purple-900 mb-2">
                 Password
@@ -128,6 +164,7 @@ export const AuthModal = ({ onClose }: AuthModalProps) => {
               />
             </div>
 
+            {/* Submit Button */}
             <button
               type="submit"
               className="w-full bg-purple-600 text-white py-3 rounded-2xl hover:bg-purple-700 transition-colors mt-6"
@@ -136,6 +173,7 @@ export const AuthModal = ({ onClose }: AuthModalProps) => {
             </button>
           </form>
 
+          {/* Switch Between Login/Sign Up */}
           <p className="text-center text-purple-400 mt-4">
             {isLogin ? "Don't have an account? " : 'Already have an account? '}
             <button
@@ -150,7 +188,7 @@ export const AuthModal = ({ onClose }: AuthModalProps) => {
           {/* Demo Note */}
           <div className="mt-4 text-center bg-purple-50 rounded-2xl p-3">
             <p className="text-purple-700 text-sm">
-              Demo: Use any email and password to {isLogin ? 'login' : 'sign up'}
+              Demo: Use your email and password to {isLogin ? 'login' : 'sign up'}
             </p>
           </div>
         </div>
