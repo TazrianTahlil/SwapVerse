@@ -80,7 +80,7 @@ export const mockItems: Item[] = [
     category: 'Electronics',
     actionType: 'trade',
     condition: 'Good',
-    conditionNote: 'Works perfectly. Includes manual and protective case.',
+    conditionNote: 'c',
     status: 'Available',
     ownerId: 'user5',
     ownerName: 'Olivia Martinez',

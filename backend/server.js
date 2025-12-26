@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 
 import authRoutes from "./routes/auth.routes.js";
+import productRoutes from "./routes/product.routes.js";
 import connectMongoDB  from "./db/connectMongoDB.js";
 
 
@@ -22,6 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
+app.use("/api/products", productRoutes);
 
 app.listen(PORT, () => {   
     console.log(`Server is running on port ${PORT}`);

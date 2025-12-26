@@ -10,9 +10,15 @@ import { protectRoute } from "../middleware/protectRoute.js";
 
 const router = express.Router();
 
+/**
+ * Public routes
+ */
 router.get("/", getProducts);
 router.get("/:id", getProductById);
 
+/**
+ * Protected routes
+ */
 router.post("/", protectRoute, createProduct);
 router.put("/:id", protectRoute, updateProduct);
 router.delete("/:id", protectRoute, deleteProduct);

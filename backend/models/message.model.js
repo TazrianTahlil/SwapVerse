@@ -2,28 +2,29 @@ import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
-const notificationSchema = new Schema(
+const messageSchema = new Schema(
   {
-    userId: {
+    senderId: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
 
-    type: {
-      type: String,
-      enum: ["request", "message", "trade", "purchase"],
-      required: true,
-    },
-
-    message: {
-      type: String,
+    receiverId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
       required: true,
     },
 
     itemId: {
       type: Schema.Types.ObjectId,
       ref: "Product",
+      required: true,
+    },
+
+    text: {
+      type: String,
+      required: true,
     },
 
     read: {
@@ -34,6 +35,6 @@ const notificationSchema = new Schema(
   { timestamps: true }
 );
 
-const Notification = mongoose.model("Notification", notificationSchema);
+const Message = mongoose.model("Message", messageSchema);
 
-export default Notification;
+export default Message;

@@ -1,65 +1,85 @@
 import mongoose from "mongoose";
 
-const productSchema = new mongoose.Schema(
+const { Schema } = mongoose;
+
+const productSchema = new Schema(
   {
-    title: {
+    name: {
       type: String,
       required: true,
+      trim: true,
     },
 
-    description: {
-      type: String,
-    },
-
-    // books or electronics
     category: {
       type: String,
-      enum: ["books", "electronics"],
+      enum: ["Books", "Electronics"],
       required: true,
     },
 
-    // donate, sell, trade
-    listingType: {
+    actionType: {
       type: String,
-      enum: ["donate", "sell", "trade"],
+      enum: ["donate", "trade", "sell"],
       required: true,
     },
 
-    // Only for sell
+    condition: {
+      type: String,
+      enum: ["New", "Good", "Used"],
+      required: true,
+    },
+
+    conditionNote: {
+      type: String,
+    },
+
+    status: {
+      type: String,
+      enum: ["Available", "Requested", "Given"],
+      default: "Available",
+    },
+
+    ownerId: {
+      type: Schema.Types.ObjectId,
+      ref: "User", // 🔗 unchanged User model
+      required: true,
+    },
+
+    ownerName: {
+      type: String,
+      required: true,
+    },
+
+    image: {
+      type: String,
+      required: true,
+    },
+
     price: {
       type: Number,
       min: 0,
-      validate: {
-        validator: function(value) {
-          // Price is required only if listingType is "sell"
-          if (this.listingType === "sell") {
-            return value !== undefined && value !== null && value >= 0;
-          }
-          return true; // For non-sell listings, price is optional
-        },
-        message: "Price is required and must be 0 or greater for sell listings"
-      }
     },
 
-    // Only for trade
-    tradeDescription: {
+    tradeExpectation: {
       type: String,
-      validate: {
-        validator: function(value) {
-          // tradeDescription is required only if listingType is "trade"
-          if (this.listingType === "trade") {
-            return value && value.trim().length > 0;
-          }
-          return true; // For non-trade listings, tradeDescription is optional
-        },
-        message: "Trade description is required for trade listings"
-      }
     },
 
-    // (optional) link product to user
-    owner: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+    genre: {
+      type: String,
+      enum: [
+        "Fiction",
+        "Non-Fiction",
+        "Textbook",
+        "Science",
+        "History",
+        "Literature",
+        "Mathematics",
+        "Other",
+      ],
+    },
+
+    deviceType: {
+      type: String,
+      enum: ["Phone", "Laptop", "Tablet", "Calculator", "Headphones", "Other"],
     },
   },
   { timestamps: true }

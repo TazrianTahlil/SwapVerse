@@ -1,22 +1,31 @@
 import Product from "../models/product.model.js";
+import User from "../models/user.model.js"; // To populate ownerName
 
 /**
  * GET /api/products
  * Optional filters:
- *  - ?listingType=sell|trade|donate
- *  - ?category=books|electronics
+ *  - ?actionType=sell|trade|donate
+ *  - ?category=Books|Electronics
  */
 export const getProducts = async (req, res) => {
   try {
-    const { listingType, category } = req.query;
-
+    const { actionType, category } = req.query;
     const filter = {};
-    if (listingType) filter.listingType = listingType;
+
+    if (actionType) filter.actionType = actionType;
     if (category) filter.category = category;
 
-    const products = await Product.find(filter).sort({ createdAt: -1 });
+    const products = await Product.find(filter)
+      .sort({ createdAt: -1 })
+      .populate('ownerId', 'fullName'); // populate owner's fullName
 
-    res.status(200).json(products);
+    // Add ownerName dynamically
+    const result = products.map(p => ({
+      ...p._doc,
+      ownerName: p.ownerId?.fullName,
+    }));
+
+    res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -27,13 +36,19 @@ export const getProducts = async (req, res) => {
  */
 export const getProductById = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(req.params.id)
+      .populate('ownerId', 'fullName');
 
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    res.status(200).json(product);
+    const result = {
+      ...product._doc,
+      ownerName: product.ownerId?.fullName,
+    };
+
+    res.status(200).json(result);
   } catch (error) {
     res.status(400).json({ message: "Invalid product ID" });
   }
@@ -42,12 +57,18 @@ export const getProductById = async (req, res) => {
 /**
  * POST /api/products
  * Create sell / trade / donate
+ * ownerId and ownerName are taken from req.user
  */
 export const createProduct = async (req, res) => {
   try {
+    if (!req.user) {
+      return res.status(401).json({ message: "Authentication required" });
+    }
+
     const product = await Product.create({
       ...req.body,
-      owner: req.user?._id, // if logged in
+      ownerId: req.user._id,
+      ownerName: req.user.fullName,
     });
 
     res.status(201).json(product);
@@ -69,7 +90,7 @@ export const updateProduct = async (req, res) => {
     }
 
     // Ownership check
-    if (req.user && product.owner?.toString() !== req.user._id.toString()) {
+    if (!req.user || product.ownerId.toString() !== req.user._id.toString()) {
       return res.status(403).json({ message: "Not authorized" });
     }
 
@@ -79,7 +100,14 @@ export const updateProduct = async (req, res) => {
       { new: true, runValidators: true }
     );
 
-    res.status(200).json(updatedProduct);
+    // Populate ownerName dynamically
+    await updatedProduct.populate('ownerId', 'fullName');
+    const result = {
+      ...updatedProduct._doc,
+      ownerName: updatedProduct.ownerId?.fullName,
+    };
+
+    res.status(200).json(result);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -96,7 +124,7 @@ export const deleteProduct = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    if (req.user && product.owner?.toString() !== req.user._id.toString()) {
+    if (!req.user || product.ownerId.toString() !== req.user._id.toString()) {
       return res.status(403).json({ message: "Not authorized" });
     }
 
